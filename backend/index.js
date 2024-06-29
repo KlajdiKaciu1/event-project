@@ -49,7 +49,7 @@ app.get('/test', (req, res) => {
     const { email, password } = req.body;
     const userDoc = await User.findOne({ email });
     if (userDoc) {
-      const isMatch = await bcrypt.compare(password, userDoc.password);
+      const isMatch =  bcrypt.compare(password, userDoc.password);
       if (isMatch) {
         jwt.sign({
           email:userDoc.email,
