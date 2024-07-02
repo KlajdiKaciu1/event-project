@@ -3,15 +3,20 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bcrypt=require('bcryptjs');
 const User=require('./models/User.js');
+const Event=require('./models/Event.js')
 const jwt=require('jsonwebtoken');
 require('dotenv').config();
 const app = express();
 const bcryptSalt=bcrypt.genSaltSync(10);
 const jwtSecret = 'aerhtehwthegaeher';
 const cookieParser = require('cookie-parser');
+const imageDownloader = require('image-downloader');
+const multer = require('multer');
+const fs=require('fs');
 
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static(__dirname+'/uploads'));
 app.use(cors({
   credentials: true,
   origin: 'http://localhost:5173',
@@ -49,9 +54,9 @@ app.get('/test', (req, res) => {
     const { email, password } = req.body;
     const userDoc = await User.findOne({ email });
     if (userDoc) {
-      const isMatch =  bcrypt.compare(password, userDoc.password);
+      const isMatch = await bcrypt.compare(password, userDoc.password);
       if (isMatch) {
-        jwt.sign({
+        jwt.sign({   //jwt can be stored in cookies
           email:userDoc.email,
           id:userDoc._id
         }, jwtSecret, {}, (err,token) => {
@@ -81,6 +86,32 @@ app.get('/profile', (req,res)=>{
 });
 app.post('/logout',(req,res)=>{
     res.cookie('token','').json(true);
+});
+
+ const photosMiddleware = multer({dest:'uploads/'});
+app.post('/upload', photosMiddleware.array('photos', 100), (req,res) => {
+  const uploadedFiles = [];
+  for (let i = 0; i < req.files.length; i++) {
+    const {path,originalname} = req.files[i];
+    const parts = originalname.split('.');
+    const ext = parts[parts.length - 1];
+    const newPath = path + '.' + ext;
+    fs.renameSync(path, newPath);
+    uploadedFiles.push(newPath.replace('uploads/',''));
+  }
+  res.json(uploadedFiles);
+});
+app.post('/events', (req,res)=>{
+  const {token}= req.cookies;
+  const {title,address,addedPhotos,description,features} =req.body;
+  jwt.verify(token,jwtSecret,{}, async(err,userData)=>{
+    if(err) throw err;
+    const eventDoc = await Event.create({
+     owner: userData.id,
+     title,address,photos:addedPhotos,description,features
+    });
+    res.json(eventDoc);
+  });
 });
 app.listen(4000, () => {
   console.log('Server is running on port 4000');

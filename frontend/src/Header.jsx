@@ -13,11 +13,12 @@ export default function Header()
           <span className="font-bold text-xl">University events</span>
         </Link>
         <div className="flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300">
-          <div>Events</div>
+          <div>Our guests</div>
           <div className="border border-l border-gray-300"></div>
-          <div>Create event</div>
+          <div>Themes</div>
           <div className="border border-l border-gray-300"></div>
-          <div>Attendes</div>
+          <div>About us</div>
+        
       
        <button className="bg-primary text-white p-1 rounded-full">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
