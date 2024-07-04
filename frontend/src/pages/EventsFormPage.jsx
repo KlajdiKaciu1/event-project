@@ -1,16 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { Navigate } from "react-router-dom";
+import { Navigate,useParams } from "react-router-dom";
 import Features from "../Features";
 import PhotosUploader from "../PhotosUploader";
 import AccountNav from "./AccountNav";
 export default function EventsFormPage(){
+  const {id} = useParams();
   const [title, setTitle] = useState('');
   const [address, setAddress] = useState('');
   const [description, setDescription] = useState('');
   const [features, setFeatures] = useState([]);
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [redirect,setRedirect] = useState(false);
+  useEffect(()=>{
+   if(!id){
+    return;
+   }
+   axios.get('/events/'+id).then (response => {
+   const {data} = response;
+   setTitle(data.title);
+   setAddress(data.address);
+   setAddedPhotos(data.photos);
+   setDescription(data.description);
+   setFeatures(data.features);
+   });
+  }, [id]);
   function inputHeader(text) {
     return (
       <h2 className="text-2xl mt-4">{text}</h2>
@@ -31,20 +45,25 @@ export default function EventsFormPage(){
       </>
     );
   }
-  async function addNewEvent(ev){
+  async function saveEvent(ev) {
     ev.preventDefault();
-    await axios.post('/events', {
-      title, address, addedPhotos, description,features
-    });
-    setRedirect(true);
-  }
+    const eventData = { title, address, addedPhotos, description, features };
+    if (id) {
+        await axios.put(`/events/${id}`, eventData);
+        setRedirect(true);
+    } else {
+        await axios.post('/events', eventData);
+        setRedirect(true);
+    }
+}
+
    if(redirect){
     return <Navigate to={'/account/events'} />
    }
     return(
          <div>
           <AccountNav />
-        <form onSubmit={addNewEvent}>
+        <form onSubmit={saveEvent}>
           {preInput('Title', 'Title of the event')}
           <input type="text" value={title}
             onChange={ev => setTitle(ev.target.value)}

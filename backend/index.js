@@ -113,6 +113,37 @@ app.post('/events', (req,res)=>{
     res.json(eventDoc);
   });
 });
+app.get('/events', (req,res) =>{
+  const {token}= req.cookies;
+  jwt.verify(token,jwtSecret,{}, async(err,userData)=>{
+    if(err) throw err;
+    const {id} = userData; 
+    res.json(await Event.find({owner:id}));
+  });
+});
+app.get('/events/:id', async (req,res) =>{
+  const {id} = req.params;
+  res.json(await Event.findById(id));
+});
+app.put('/events/:id', async (req, res) => {
+  const { token } = req.cookies;
+  const { id } = req.params;
+  const { title, address, addedPhotos, description, features } = req.body;
+  
+  jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      
+      const eventDoc = await Event.findById(id);
+      if (userData.id === eventDoc.owner.toString()) {
+          eventDoc.set({ title, address, photos: addedPhotos, description, features });
+          await eventDoc.save();
+          res.json('ok');
+      } else {
+          res.status(403).json('Unauthorized');
+      }
+  });
+});
+
 app.listen(4000, () => {
   console.log('Server is running on port 4000');
 });
