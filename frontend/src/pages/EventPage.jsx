@@ -11,7 +11,16 @@ export default function EventPage() {
       setEvents(data);
     });
   }, []);
-
+  
+  function deleteEvent(eventId) {
+    axios.delete(`/events/${eventId}`)
+      .then(() => {
+        setEvents(events.filter(event => event._id !== eventId));
+      })
+      .catch(error => {
+        console.error("Error deleting event:", error);
+      });
+  }
   return (
     <div>
       <AccountNav />
@@ -23,17 +32,18 @@ export default function EventPage() {
           </svg>
           Add new event
         </Link>
-      </div>
+    </div>
       <div className="mt-4">
         {events.length > 0 && events.map(event => (
+        <div>
           <Link
             key={event._id} 
             to={'/account/events/' + event._id}
-            className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl"
+            className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl mb-4"
           >
-            <div className="w-32 h-32 bg-gray-300 grow shrink-0">
+            <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
               {event.photos.length > 0 && (
-                <img src={event.photos[0]} alt="" />
+                <img className="object-cover" src={'http://localhost:4000/'+event.photos[0]} alt="" />
               )}
             </div>
             <div className="grow-0 shrink">
@@ -41,8 +51,14 @@ export default function EventPage() {
               <p className="text-sm mt-2">{event.description}</p>
             </div>
           </Link>
+          <button onClick={() => deleteEvent(event._id)} 
+             className="inline-flex gap-2 py-2 px-6 rounded-full bg-primary text-white mb-4">
+             Delete Event
+          </button>
+        </div>
         ))}
       </div>
     </div>
   );
 }
+

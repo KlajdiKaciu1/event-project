@@ -143,7 +143,26 @@ app.put('/events/:id', async (req, res) => {
       }
   });
 });
-
+app.delete('/events/:id', async (req, res) => {
+  const { token } = req.cookies;
+  const { id } = req.params;
+  try {
+    jwt.verify(token, jwtSecret, async (err, userData) => {
+      if (err) throw err;
+      const event = await Event.findById(id);
+      if (userData.id !== event.owner.toString()) {
+        return res.status(403).json({ error: 'Permission denied' });
+      }
+      if (!event) {
+        return res.status(404).json({ error: 'Event not found' });
+      }
+      await Event.findByIdAndDelete(id);
+      res.json({ message: 'Event deleted successfully' });
+    });
+  } catch (error) {
+    console.error('Error deleting event:', error);
+  }
+});
 app.listen(4000, () => {
   console.log('Server is running on port 4000');
 });
