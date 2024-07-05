@@ -113,7 +113,7 @@ app.post('/events', (req,res)=>{
     res.json(eventDoc);
   });
 });
-app.get('/events', (req,res) =>{
+app.get('/user-events', (req,res) =>{
   const {token}= req.cookies;
   jwt.verify(token,jwtSecret,{}, async(err,userData)=>{
     if(err) throw err;
@@ -162,6 +162,9 @@ app.delete('/events/:id', async (req, res) => {
   } catch (error) {
     console.error('Error deleting event:', error);
   }
+});
+app.get('/events', async (req,res)=>{
+ res.json(await Event.find());
 });
 app.listen(4000, () => {
   console.log('Server is running on port 4000');

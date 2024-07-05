@@ -7,7 +7,7 @@ export default function EventPage() {
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
-    axios.get('/events').then(({ data }) => {
+    axios.get('/user-events').then(({ data }) => {
       setEvents(data);
     });
   }, []);
