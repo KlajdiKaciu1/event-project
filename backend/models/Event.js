@@ -7,6 +7,7 @@ const eventSchema = new mongoose.Schema({
     photos: [String],
     description: String,
     features: [String],
+    selectedDate: Date,
 });
 
 const EventModel = mongoose.model('Event', eventSchema);

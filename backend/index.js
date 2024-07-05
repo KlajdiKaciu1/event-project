@@ -103,12 +103,12 @@ app.post('/upload', photosMiddleware.array('photos', 100), (req,res) => {
 });
 app.post('/events', (req,res)=>{
   const {token}= req.cookies;
-  const {title,address,addedPhotos,description,features} =req.body;
+  const {title,address,addedPhotos,description,features,selectedDate} =req.body;
   jwt.verify(token,jwtSecret,{}, async(err,userData)=>{
     if(err) throw err;
     const eventDoc = await Event.create({
      owner: userData.id,
-     title,address,photos:addedPhotos,description,features
+     title,address,photos:addedPhotos,description,features,selectedDate,
     });
     res.json(eventDoc);
   });
@@ -128,14 +128,14 @@ app.get('/events/:id', async (req,res) =>{
 app.put('/events/:id', async (req, res) => {
   const { token } = req.cookies;
   const { id } = req.params;
-  const { title, address, addedPhotos, description, features } = req.body;
+  const { title, address, addedPhotos, description, features, selectedDate } = req.body;
   
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
       if (err) throw err;
       
       const eventDoc = await Event.findById(id);
       if (userData.id === eventDoc.owner.toString()) {
-          eventDoc.set({ title, address, photos: addedPhotos, description, features });
+          eventDoc.set({ title, address, photos: addedPhotos, description, features, selectedDate });
           await eventDoc.save();
           res.json('ok');
       } else {

@@ -4,6 +4,8 @@ import { Navigate,useParams } from "react-router-dom";
 import Features from "../Features";
 import PhotosUploader from "../PhotosUploader";
 import AccountNav from "./AccountNav";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 export default function EventsFormPage(){
   const {id} = useParams();
   const [title, setTitle] = useState('');
@@ -12,6 +14,7 @@ export default function EventsFormPage(){
   const [features, setFeatures] = useState([]);
   const [addedPhotos, setAddedPhotos] = useState([]);
   const [redirect,setRedirect] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
   useEffect(()=>{
    if(!id){
     return;
@@ -23,6 +26,7 @@ export default function EventsFormPage(){
    setAddedPhotos(data.photos);
    setDescription(data.description);
    setFeatures(data.features);
+   setSelectedDate(data.selectedDate)
    });
   }, [id]);
   function inputHeader(text) {
@@ -47,7 +51,7 @@ export default function EventsFormPage(){
   }
   async function saveEvent(ev) {
     ev.preventDefault();
-    const eventData = { title, address, addedPhotos, description, features };
+    const eventData = { title, address, addedPhotos, description, features, selectedDate };
     if (id) {
         await axios.put(`/events/${id}`, eventData);
         setRedirect(true);
@@ -79,6 +83,12 @@ export default function EventsFormPage(){
           <textarea value={description} onChange={ev => setDescription(ev.target.value)} />
           {preInput('Features', 'Select the features of the event')}
           <Features selected={features} onChange={setFeatures} />
+          <h2 className="text-2xl mt-4">Date</h2>
+          <DatePicker
+           selected={selectedDate}
+           onChange={date => setSelectedDate(date)}
+           dateFormat="yyyy/MM/dd"
+         />
           <div>
             <button className="primary my-4">Save</button>
           </div>

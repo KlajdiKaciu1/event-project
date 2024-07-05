@@ -35,13 +35,12 @@ export default function EventPage() {
     </div>
       <div className="mt-4">
         {events.length > 0 && events.map(event => (
-        <div>
+        <div key={event._id} >    
           <Link
-            key={event._id} 
             to={'/account/events/' + event._id}
             className="flex cursor-pointer gap-4 bg-gray-100 p-4 rounded-2xl mb-4"
           >
-            <div className="flex w-32 h-32 bg-gray-300 grow shrink-0">
+            <div className="flex w-32 h-32 bg-gray-300  shrink-0">
               {event.photos.length > 0 && (
                 <img className="object-cover" src={'http://localhost:4000/'+event.photos[0]} alt="" />
               )}
