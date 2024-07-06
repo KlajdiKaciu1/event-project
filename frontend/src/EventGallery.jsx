@@ -46,7 +46,7 @@ export default function EventGallery({ event }) {
   }
 
   return (
-    <div className="relative">
+    <div className="relative lg:scale-75 lg:transform lg:origin-center lg:-mt-10">
       <div className="grid gap-2 grid-cols-1 sm:grid-cols-2 lg:grid-cols-[2fr_1fr] rounded-3xl overflow-hidden">
         <div className="aspect-square overflow-hidden">
           {event.photos?.[0] && (
@@ -83,7 +83,7 @@ export default function EventGallery({ event }) {
       </div>
       <button
         onClick={() => setShowAllPhotos(true)}
-        className="flex gap-1 absolute bottom-2 right-2 py-2 px-4 bg-white rounded-2xl shadow shadow-md shadow-gray-500"
+        className="flex gap-1 absolute bottom-2 right-2 py-2 px-4 bg-white rounded-2xl  shadow-gray-500"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -102,4 +102,3 @@ export default function EventGallery({ event }) {
     </div>
   );
 }
-
