@@ -3,7 +3,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const bcrypt=require('bcryptjs');
 const User=require('./models/User.js');
-const Event=require('./models/Event.js')
+const Event=require('./models/Event.js');
+const Attendee=require('./models/Attendee.js')
 const jwt=require('jsonwebtoken');
 require('dotenv').config();
 const app = express();
@@ -165,6 +166,18 @@ app.delete('/events/:id', async (req, res) => {
 });
 app.get('/events', async (req,res)=>{
  res.json(await Event.find());
+});
+app.post('/attendees', (req,res)=>{
+  const {token}= req.cookies;
+  const {eventId, name, phoneNumber,studyField,yearOfStudy,} =req.body;
+  jwt.verify(token,jwtSecret,{}, async(err,userData)=>{
+    if(err) throw err;
+    const attendeeDoc = await Attendee.create({
+     userId: userData.id,
+     eventId, name, phoneNumber,studyField,yearOfStudy
+    });
+    res.json(attendeeDoc);
+  });
 });
 app.listen(4000, () => {
   console.log('Server is running on port 4000');

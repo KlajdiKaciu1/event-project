@@ -7,6 +7,7 @@ import AccountPage from './pages/AccountPage';
 import EventPage from './pages/EventPage';
 import EventsFormPage from './pages/EventsFormPage';
 import EventInfoPage from './pages/EventInfoPage';
+import AttendeeFormPage from './pages/AttendeeFormPage';
 import Layout from './Layout';
 import axios from "axios";
 import { UserContextProvider } from './UserContex';
@@ -27,6 +28,7 @@ function App() {
           <Route path="/account/events/new"  element={<EventsFormPage />}/>
           <Route path="/account/events/:id"  element={<EventsFormPage />}/>
           <Route path="/event/:id" element={<EventInfoPage />}/>
+          <Route path="/event/:event_id/form" element={<AttendeeFormPage />}/>
         </Route>
       </Routes>
   </UserContextProvider>
