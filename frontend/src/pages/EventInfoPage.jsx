@@ -5,6 +5,7 @@ import EventGallery from "../EventGallery";
 import { Link } from "react-router-dom";
 export default function EventInfoPage(){
     const [event,setEvent] = useState(null);
+    const [attendee,setAttendee] = useState([]);
     const {id} = useParams();
     useEffect(()=>{
     if(!id){
@@ -13,6 +14,9 @@ export default function EventInfoPage(){
     axios.get(`/events/${id}`).then(response=>{
        setEvent(response.data);
     });
+    axios.get(`/attendee/${id}`).then(response=>{
+        setAttendee(response.data);
+     });
     },[id]);
     if(!event) return '';
     return (
@@ -52,16 +56,11 @@ export default function EventInfoPage(){
                         </div>
                         <div className="md:w-1/2">
                             <h2 className="font-semibold text-2xl">Attendees</h2>
-                            <div>Attendees</div>
-                            <div>Attendees</div>
-                            <div>Attendees</div>
-                            <div>Attendees</div>
-                            <div>Attendees</div>
-                            <div>Attendees</div>
-                            <div>Attendees</div>
-                            <div>Attendees</div>
-                            <div>Attendees</div>
-                            <div>Attendees</div>
+                            <ul className="list-disc pl-5">
+                                {attendee.map((att, index) => (
+                                    <li key={index} className="mt-2">{att.name}</li>
+                                ))}
+                            </ul>
                         </div>
                     </div>
                 </div>

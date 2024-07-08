@@ -179,6 +179,15 @@ app.post('/attendees', (req,res)=>{
     res.json(attendeeDoc);
   });
 });
+app.get('/attendee/:eventId', async (req, res) => {
+  const { eventId } = req.params;
+  try {
+    const attendees = await Attendee.find({ eventId });
+    res.json(attendees);
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while fetching attendees.' });
+  }
+})
 app.listen(4000, () => {
   console.log('Server is running on port 4000');
 });
