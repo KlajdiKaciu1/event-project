@@ -57,7 +57,7 @@ app.get('/test', (req, res) => {
     if (userDoc) {
       const isMatch = await bcrypt.compare(password, userDoc.password);
       if (isMatch) {
-        jwt.sign({   //jwt can be stored in cookies
+        jwt.sign({   
           email:userDoc.email,
           id:userDoc._id
         }, jwtSecret, {}, (err,token) => {
@@ -188,6 +188,23 @@ app.get('/attendee/:eventId', async (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching attendees.' });
   }
 })
+app.get('/joinedEvents', (req, res) => {
+    const { token } = req.cookies;
+
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+        if (err) throw err;
+        try {
+            const attendees = await Attendee.find({ userId: userData.id });
+            const eventIds = attendees.map(attendee => attendee.eventId); // Assuming 'eventId' is the field linking events
+            const events = await Event.find({ _id: { $in: eventIds } });
+            res.json(events);
+        } catch (error) {
+            console.error('Error fetching joined events:', error);
+            res.status(500).send('Server error');
+        }
+    });
+});
+
 app.listen(4000, () => {
   console.log('Server is running on port 4000');
 });
