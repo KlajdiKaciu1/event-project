@@ -6,7 +6,7 @@ export default function RegisterPage() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isAdmin, setIsAdmin] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(true);
 
    async  function registerUser(ev) {
         ev.preventDefault();
@@ -25,9 +25,9 @@ export default function RegisterPage() {
 }
 
     return (
-        <div className="mt-4 grow flex items-center justify-around">
+        <div className="mt-4 grow flex items-center min-h-screen  justify-center bg-gray-100">
             <div className="mb-64">
-                <h1 className="text-4xl text-center mb-4">SignUp</h1>
+                <h1 className="text-4xl text-center mb-4">Create new Admin</h1>
                 <form className="max-w-md mx-auto" onSubmit={registerUser}>
                     <input type="text" placeholder="Name Surname" 
                            value={name} 
@@ -40,12 +40,8 @@ export default function RegisterPage() {
                     <input type="password" placeholder="password"
                            value={password} 
                            onChange={ev => setPassword(ev.target.value)} />
-                    
+             
                     <button className="primary">SignUp</button>
-                    <div className="text-center py-2 text-gray-500">
-                        Already have an account? {"\t"}
-                        <Link className="underline text-black" to="/login">LogIn</Link>
-                    </div>
                 </form>
             </div>
         </div>

@@ -14,7 +14,7 @@ const cookieParser = require('cookie-parser');
 const imageDownloader = require('image-downloader');
 const multer = require('multer');
 const fs=require('fs');
-
+const adminRoutes = require('./admin/adminRoutes');
 app.use(express.json());
 app.use(cookieParser());
 app.use('/uploads', express.static(__dirname+'/uploads'));
@@ -38,11 +38,12 @@ app.get('/test', (req, res) => {
 
   app.post('/register', async (req, res) => {
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password, isAdmin } = req.body;
       const userDoc = await User.create({
         name,
         email,
         password: bcrypt.hashSync(password, bcryptSalt),
+        isAdmin: isAdmin || false, 
       });
       res.status(201).json(userDoc); 
     } catch (error) {
@@ -59,7 +60,8 @@ app.get('/test', (req, res) => {
       if (isMatch) {
         jwt.sign({   
           email:userDoc.email,
-          id:userDoc._id
+          id:userDoc._id,
+          isAdmin: userDoc.isAdmin
         }, jwtSecret, {}, (err,token) => {
           if (err) throw err;
           res.cookie('token', token).json(userDoc);
@@ -72,19 +74,27 @@ app.get('/test', (req, res) => {
     }
   });
   
-app.get('/profile', (req,res)=>{
-  const {token}= req.cookies;
-  if(token){
-    jwt.verify(token,jwtSecret,{}, async(err,userData)=>{
-      if(err) throw err;
-      const {name,email,_id}=await User.findById(userData.id)
-      res.json({name,email,_id});
-    });
-    }else{
-      res.json(null);
+  app.get('/profile', async (req, res) => {
+    const { token } = req.cookies;
+    if (token) {
+      try {
+        const userData = jwt.verify(token, jwtSecret);
+        const user = await User.findById(userData.id);
+        if (user) {
+          const { name, email, _id } = user;
+          res.json({ name, email, _id });
+        } else {
+          res.status(404).json({ error: 'User not found' });
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        res.status(500).json({ error: 'Server error' });
+      }
+    } else {
+      res.status(401).json({ error: 'Unauthorized' });
     }
-
-});
+  });
+  
 app.post('/logout',(req,res)=>{
     res.cookie('token','').json(true);
 });
@@ -195,7 +205,7 @@ app.get('/joinedEvents', (req, res) => {
         if (err) throw err;
         try {
             const attendees = await Attendee.find({ userId: userData.id });
-            const eventIds = attendees.map(attendee => attendee.eventId); // Assuming 'eventId' is the field linking events
+            const eventIds = attendees.map(attendee => attendee.eventId); 
             const events = await Event.find({ _id: { $in: eventIds } });
             res.json(events);
         } catch (error) {
@@ -204,7 +214,7 @@ app.get('/joinedEvents', (req, res) => {
         }
     });
 });
-
+app.use('/admin', adminRoutes);
 app.listen(4000, () => {
   console.log('Server is running on port 4000');
 });

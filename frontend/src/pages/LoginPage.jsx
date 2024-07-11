@@ -7,7 +7,8 @@ export default function LoginPage()
 {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [redirect,setRedirect] = useState(false);
+    const [redirectUser,setRedirectUser] = useState(false);
+    const [redirectAdmin,setRedirectAdmin] = useState(false);
     const {setUser} = useContext(UserContext);
 
     async function handleLoginSubmit(ev){
@@ -16,15 +17,22 @@ export default function LoginPage()
         const {data}= await axios.post('/login',{email,password});
         setUser(data);
         alert('Login successful!');
-        setRedirect(true);
+        if (data.isAdmin){
+        setRedirectAdmin(true);
+        }
+        else{
+        setRedirectUser(true);
+        }
         } catch(e){
             alert('Login failed!');
         }
-
     }
-    if(redirect){
-        return <Navigate to={'/'} />
+    if(redirectUser){
+       return <Navigate to={'/'} />
         }
+        if(redirectAdmin){
+            return <Navigate to={'/admin'} />
+             }
     return(
     <div className="mt-4 grow flex items-center justify-around">
         <div className="mb-64">
