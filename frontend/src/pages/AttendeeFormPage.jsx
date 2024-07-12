@@ -96,47 +96,47 @@ export default function AttendeeFormPage() {
     return <Navigate to={redirect} />
 }
   return (
-    <div>
+   <div>
       <div className='text-2xl mt-4 flex justify-center font-bold'>Attendee Form</div>
       <div>
-        {preInput('Name', 'Full name')}
-        <input
-          type="text"
-          placeholder="Name"
-          value={name}
-          onChange={ev => setName(ev.target.value)}
-          disabled
-        />
-        {preInput('Phone Number', 'Write your phone number')}
-        <input
-          type="text"
-          placeholder="xxxx-xxxx-xxxx"
-          value={phoneNumber}
-          onChange={ev => setPhoneNumber(ev.target.value)}
-        />
-        {preInput('Study Field', 'Ex..Computer Engineering')}
-        <input
-          type="text"
-          value={studyField}
-          onChange={ev => setStudyField(ev.target.value)}
-        />
-        {preInput('Year of Study')}
-        <input className='p-2 border  border-gray-300 rounded-md'
-          type="number"
-          value={yearOfStudy}
-          onChange={ev => setYearOfStudy(ev.target.value)}
-        />
+          {preInput('Name', 'Full name')}
+          <input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={ev => setName(ev.target.value)}
+            disabled
+          />
+         {preInput('Phone Number', 'Write your phone number')}
+           <input
+            type="text"
+            placeholder="xxxx-xxxx-xxxx"
+            value={phoneNumber}
+            onChange={ev => setPhoneNumber(ev.target.value)}
+           />
+          {preInput('Study Field', 'Ex..Computer Engineering')}
+           <input
+            type="text"
+            value={studyField}
+            onChange={ev => setStudyField(ev.target.value)}
+           />
+          {preInput('Year of Study')}
+           <input className='p-2 border  border-gray-300 rounded-md'
+            type="number"
+            value={yearOfStudy}
+            onChange={ev => setYearOfStudy(ev.target.value)}
+           />
       </div>
       <div>
-        <button  onClick={registerButton} className='inline-flex gap-1 bg-primary text-white py-3 px-7 rounded-full mt-10'>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-           <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
-        </svg>
-        Register
-        </button>
+          <button  onClick={registerButton} className='inline-flex gap-1 bg-primary text-white py-3 px-7 rounded-full mt-10'>
+             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                 <path strokeLinecap="round" strokeLinejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM3 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 9.374 21c-2.331 0-4.512-.645-6.374-1.766Z" />
+             </svg>
+               Register
+          </button>
       </div>
-   {showPopup && <Popup message="User is not logged in" redirectPath="/login" />}
-    </div>
+        {showPopup && <Popup message="User is not logged in" redirectPath="/login" />}
+  </div>
   );
 }
 

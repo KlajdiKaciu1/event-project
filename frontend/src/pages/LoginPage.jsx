@@ -40,7 +40,7 @@ export default function LoginPage()
         <form className="max-w-md mx-auto " onSubmit={handleLoginSubmit}>
             <input type="email" placeholder={"your@email.com"} 
              value={email} 
-            onChange={ev =>setEmail(ev.target.value)}/>
+             onChange={ev =>setEmail(ev.target.value)}/>
 
             <input type="password" placeholder="password" 
             value={password} 

@@ -11,7 +11,6 @@ const app = express();
 const bcryptSalt=bcrypt.genSaltSync(10);
 const jwtSecret = 'aerhtehwthegaeher';
 const cookieParser = require('cookie-parser');
-const imageDownloader = require('image-downloader');
 const multer = require('multer');
 const fs=require('fs');
 const adminRoutes = require('./admin/adminRoutes');

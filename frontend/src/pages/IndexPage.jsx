@@ -27,7 +27,7 @@ export default function IndexPage() {
                      <h2 className="font-bold">{event.title}</h2>
                     <h3 className="text-sm leading-4 text-gray-800">{event.address}</h3>
                     <h2 className=" font-bold text-sm leading-4 text-gray-600">Date: {formatDate(event.selectedDate)}</h2>
-                </Link>
+               </Link>
             ))}
         </div>
     );

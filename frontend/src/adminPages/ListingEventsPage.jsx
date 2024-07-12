@@ -22,8 +22,6 @@ export default function ListingEventsPage() {
   return (
     <div>
       <AdminNav />
-      <div className="text-center">
-    </div>
       <div className="mt-4">
         {events.length > 0 && events.map(event => (
         <div key={event._id} >    

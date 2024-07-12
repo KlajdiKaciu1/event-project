@@ -14,7 +14,7 @@ export default function AdminDashboard() {
           </svg>
           Add new admin
         </Link>
-    </div>
-    </div>
+      </div>
+   </div>
   );
 }

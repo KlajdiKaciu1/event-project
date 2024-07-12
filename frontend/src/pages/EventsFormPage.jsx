@@ -65,17 +65,17 @@ export default function EventsFormPage(){
     return <Navigate to={'/account/events'} />
    }
     return(
-         <div>
+     <div>
           <AccountNav />
         <form onSubmit={saveEvent}>
-          {preInput('Title', 'Title of the event')}
-          <input type="text" value={title}
-            onChange={ev => setTitle(ev.target.value)}
-            placeholder="title" />
+            {preInput('Title', 'Title of the event')}
+            <input type="text" value={title}
+               onChange={ev => setTitle(ev.target.value)}
+               placeholder="title" />
           {preInput('Address', 'Address to the event')}
-          <input type="text"
-            value={address} onChange={ev => setAddress(ev.target.value)}
-            placeholder="address" />
+            <input type="text"
+                value={address} onChange={ev => setAddress(ev.target.value)}
+                placeholder="address" />
 
           <h2 className="text-2xl mt-4">Photos</h2>
           <PhotosUploader addedPhotos={addedPhotos} onChange={setAddedPhotos} />
@@ -88,12 +88,12 @@ export default function EventsFormPage(){
            selected={selectedDate}
            onChange={date => setSelectedDate(date)}
            dateFormat="yyyy/MM/dd"
-         />
+          />
           <div>
             <button className="primary my-4">Save</button>
           </div>
         </form>
-      </div>
+     </div>
       );
     
 }

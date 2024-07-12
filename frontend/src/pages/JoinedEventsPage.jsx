@@ -18,7 +18,7 @@ export default function JoinedEventsPage() {
         return formattedDate;
       };
     return (
-        <div>
+      <div>
            <AccountNav />
             <div>
               {joinedEvents.length > 0 && joinedEvents.map(event => (
@@ -40,7 +40,7 @@ export default function JoinedEventsPage() {
                           <div className="mb-2 mt-4 text-gray-500">
                              {formatDate(event.selectedDate)}
                           </div>
-                     </div>
+                    </div>
                 </div> 
               ))}
          </div>
