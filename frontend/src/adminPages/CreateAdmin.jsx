@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 
@@ -6,7 +6,8 @@ export default function RegisterPage() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isAdmin, setIsAdmin] = useState(true);
+    const [isAdmin] = useState(true);
+    const [redirect,setRedirect] = useState(false);
 
    async  function registerUser(ev) {
         ev.preventDefault();
@@ -18,10 +19,14 @@ export default function RegisterPage() {
             isAdmin
         });
         alert('Registration completed!');
+        setRedirect(true);
     }catch(e)
     {
         alert('Registration failed!');
     }
+}
+if (redirect){
+    return <Navigate to={'/admin'} />
 }
 
     return (

@@ -20,7 +20,7 @@ export default function EventInfoPage(){
     },[id]);
     if(!event) return '';
     return (
-        <div className="mt-4 bg-gray-100 -mx-8 px-8 pt-4 py-8">
+        <div className="mt-4 bg-gradient-to-r from-gray-100 to-purple-100 -mx-8 px-8 pt-4 py-8">
             <h1 className="text-3xl">{event.title}</h1>
             <div className="my-3 flex gap-1">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
